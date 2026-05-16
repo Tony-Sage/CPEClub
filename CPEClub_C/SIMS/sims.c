@@ -7,7 +7,7 @@
 
 struct sinfo {
     char fname[50];
-    char lname[50];  // Note: PDF has "Iname" but should be "lname" (last name)
+    char lname[50];
     int roll;
     float cgpa;
     int cid[MAX_COURSES];
@@ -16,7 +16,6 @@ struct sinfo {
 struct sinfo students[MAX_STUDENTS];
 int student_count = 0;
 
-// Function prototypes
 void add_student();
 void bulk_import();
 void download_all();
@@ -35,7 +34,7 @@ int main() {
         display_menu();
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        getchar(); // Clear newline
+        getchar(); 
         
         switch(choice) {
             case 1:
@@ -89,7 +88,7 @@ void add_student() {
     printf("\n--- Add New Student ---\n");
     printf("Enter First Name: ");
     fgets(new_student.fname, sizeof(new_student.fname), stdin);
-    new_student.fname[strcspn(new_student.fname, "\n")] = 0; // Remove newline
+    new_student.fname[strcspn(new_student.fname, "\n")] = 0;
     
     printf("Enter Last Name: ");
     fgets(new_student.lname, sizeof(new_student.lname), stdin);
@@ -106,7 +105,7 @@ void add_student() {
         printf("Course %d: ", i+1);
         scanf("%d", &new_student.cid[i]);
     }
-    getchar(); // Clear newline
+    getchar();
     
     students[student_count] = new_student;
     student_count++;
@@ -238,7 +237,6 @@ void delete_by_roll() {
     
     for (int i = 0; i < student_count; i++) {
         if (students[i].roll == roll) {
-            // Shift all remaining students left
             for (int j = i; j < student_count - 1; j++) {
                 students[j] = students[j + 1];
             }
