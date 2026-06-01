@@ -1,8 +1,11 @@
 def prompt():
     print("\n=== MENU ===")
     print("1. Make a call \n2. Send an SMS \n3. View current bill \n4. Pay bill \n5. Exit")
-    selected = int(input("Enter the number of your desired option: "))
-    return selected
+    while True:
+        try:
+            return int(input("Enter the number of your desired option: "))
+        except ValueError:
+            print("Invalid input!")
 
 
 def call():
@@ -25,7 +28,7 @@ def sendMessage():
     return bill
 
 def viewBill(name, phoneNumber, bill):
-    print(f"Name: {name} \nNumber: {phoneNumber} \nBill: ₦{bill}")
+    print(f"\nName: {name} \nNumber: {phoneNumber} \nBill: ₦{bill}")
 
 def payBill(bill):
     if bill > 0:
