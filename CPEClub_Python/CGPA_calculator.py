@@ -22,6 +22,13 @@ def calculateGradePoint(grade):
 
 def updateRecord(course, creditLoad, grade):
     record.append({"course": course, "creditLoad": creditLoad, "grade": grade})
+
+def saveToFile(number, record, CGPA):
+    with open("CGPA.txt", "w") as file:
+        file.write("=== YOUR RESULT ===\n")
+        for i in range(number):
+            file.write(f"\nCourse: {record[i]['course']}, Credit Load: {record[i]['creditLoad']}, Grade: {record[i]['grade']}")
+        file.write(f"\nYour CGPA is {CGPA: .2f}")
     
 
 #heading
@@ -31,7 +38,11 @@ print("== CGPA Calculator == \n")
 while True:
     try:
         number = int(input("How many courses did you offer this semester? "))
+        if number == 0:
+            print("You didn't offer any courses.\nExiting...")
+            (exit)
         break
+        
     except ValueError:
         print("Please input a valid number. Letters and symbols are not accepted")
 
@@ -50,20 +61,18 @@ for i in range(number):
         except ValueError:
             input("The credit load must be a number. Enter a valid number: ")
         
-    grade = data[2]
+    grade = data[2].upper()
     totalCreditUnits += creditLoad
-    gradePoint = calculateGradePoint(data[2])
+    gradePoint = calculateGradePoint(grade)
     
     # input validation for grade
-    if gradePoint != False:
-        totalQualityUnits += creditLoad * gradePoint
-        updateRecord(course, creditLoad, grade)
-    else:
-        while gradePoint == False:
-            print("\nInvalid grade! Grade must be between A and F")
-            gradePoint = calculateGradePoint(input("Enter a valid grade: "))
-            totalQualityUnits += creditLoad * gradePoint
-            updateRecord(course, creditLoad, grade)
+    while gradePoint == False:
+        print("\nInvalid grade! Grade must be between A and F")
+        grade = input("Enter a valid grade: ").upper()
+        gradePoint = calculateGradePoint(grade)
+            
+    totalQualityUnits += creditLoad * gradePoint
+    updateRecord(course, creditLoad, grade)
         
 # calculating CGPA
 CGPA = totalQualityUnits / totalCreditUnits
@@ -78,13 +87,14 @@ print(f"\nYour CGPA is {CGPA: .2f}")
 #saving to file
 choice = input("Do you want to save result to file? Enter y for yes or n for no: ")
 
+
 while True:
-    if choice == "y":
-        with open("CGPA.txt", "w") as file:
-            file.write("=== YOUR RESULT ===\n")
-            for i in range(number):
-                file.write(f"Course: {record[i]['course']}, Credit Load: {record[i]['creditLoad']}, Grade: {record[i]['grade']}")
-            file.write(f"\nYour CGPA is {CGPA: .2f}")
-            break
+    if choice.lower() == "y":
+        saveToFile(number, record, CGPA)
+        print("Your result was saved to CGPA.txt")
+        break
+    elif choice.lower() == "n" :
+        print("Your result wasnt saved to a file")
+        break
     else:
-        print("Enter only y or n please!")
+        choice = input("Please enter only n or y: ").lower()
